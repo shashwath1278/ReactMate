@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.chess-board {
+  transition: transform 0.5s;
+}
+
+.flipped {
+  transform: rotate(180deg);
+}

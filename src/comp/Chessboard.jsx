@@ -1,42 +1,51 @@
-import { resetGame } from "../hex";
+import { useEffect, useState } from "react";
 import Boardsq from "./Boardsq";
+import { resetGame } from "../hex";
 
-export default function Chessboard({ board }) {
+export default function Chessboard({ board, flip, onMove }) {
+  const [displayBoard, setDisplayBoard] = useState([]);
+
+ 
+
+useEffect(() => {
+  
+  if (board) {
+    setDisplayBoard(flip ? board.flat().reverse() : board.flat());
+  }
+}, [board, flip]);
 
 
-  const xdim = ["1", "2", "3", "4", "5", "6", "7", "8"]
   function isDarkSquare(i) {
-    const { x, y } = getDimensions(i)
-    return (x + y) % 2 === 1
-
+    const { x, y } = getDimensions(i);
+    return (x + y) % 2 === 1;
   }
 
   function getDimensions(i) {
-    const x = i % 8;
-    const y = Math.abs(Math.floor((i / 8) - 7))
-    return { x, y }
+    const x =!flip?i % 8:Math.abs((i%8)-7);
+    const y = !flip?Math.abs(Math.floor(i / 8 - 7)):Math.floor(i / 8 );
+    return { x, y };
   }
 
   function getPosition(i) {
-    const { x, y } = getDimensions(i)
-    const ydim = ["a", "b", "c", "d", "e", "f", "g", "h"][x]
-    return `${ydim}${y + 1}`
+    const { x, y } = getDimensions(i);
+    const ydim = ["a", "b", "c", "d", "e", "f", "g", "h"][x];
+    return `${ydim}${y + 1}`;
   }
-
 
   return (
     <>
-      <div className='chessboard'>
-        {board.flat().map((piece, i) => (
+      <div className="chessboard">
+        {displayBoard.map((piece, i) => (
           <div key={i} className="sq">
-            <Boardsq position={getPosition(i)} dark={isDarkSquare(i)} u={piece} />
+            <Boardsq position={getPosition(i)} dark={isDarkSquare(i)} u={piece} onMove={onMove} />
           </div>
         ))}
-
       </div>
-      <div className="reset-container" ><button onClick={resetGame} className="reset-button">
-        Reset Game
-      </button></div></>
+      <div className="reset-container">
+        <button onClick={resetGame} className="reset-button">
+          Reset Game
+        </button>
+      </div>
+    </>
   );
-};
-
+}

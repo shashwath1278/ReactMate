@@ -1,106 +1,83 @@
 import { Chess } from 'chess.js'; 
 import { BehaviorSubject } from 'rxjs';
-import React, { useState, useEffect } from 'react';
-import Board from './comp/Chessboard'
 
-
-
-
-const k = 'rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3'; 
 const game = new Chess();
 
-export const gust = new BehaviorSubject();
-
-let previousBoard = game.board(); 
-
+export const gust = new BehaviorSubject({
+  board: game.board(),
+  turn: game.turn(), 
+});
 
 export function move(from, to, promotion) {
   try {
     let tempMove = { from, to };
-    
-   
+
     if (promotion) {
-      tempMove.promotion = promotion;
+      tempMove.promotion = promotion;  
     }
 
+
     const legalMove = game.move(tempMove); 
-    
+
+
     if (legalMove) {
-      
-      setGame();
-      
-      if (game.isStalemate()) {
-        alert("The game is a draw!")
+      setGame();  
+
+      if (game.isStalemate() || game.isDraw() || game.isInsufficientMaterial()) {
+        alert("The game is a draw!");
       }
-    
-      if (game.isInsufficientMaterial()) {
-        alert("The game is a draw!")
-      }
-      
-      if (game.isDraw()) {
-        alert("The game is a draw!")
-      }
-      
+
       if (game.isCheckmate()) {
-        
-        alert("CHECKMATE")
+        alert("CHECKMATE");
       } else if (game.inCheck()) {
-        console.log("Check!"); 
+        console.log("Check!");
       }
-      if (game.isGameOver()) {
-        
-        if(window.confirm("GAME OVER! . Do you want to restart?")){
-          game.reset();
-         setGame();
-        }
+
+      if (game.isGameOver() && window.confirm("GAME OVER! Do you want to restart?")) {
+        game.reset();
+        setGame();
       }
+    } else {
+      console.log("Invalid move, move was not made.");
     }
   } catch (err) {
-    console.log("Invalid move"); 
+    console.log("Invalid move");
   }
 }
 
-function setGame(upcomingPromotion) {
-  const newGame = {
-    board: game.board(),
-    upcomingPromotion
-  };
-  gust.next(newGame); 
+
+export function handleMove(from, to, promotionPiece) {
+  const promotions = game.moves({ verbose: true }).filter(m => m.promotion);
+
+  
+  if (promotions.some(pawn => pawn.from === from && pawn.to === to)) {
+  
+    const promotion = promotions.find(pawn => pawn.from === from && pawn.to === to);
+    const upcomingPromotion = { from, to, color: promotion.color };
+
+    
+    gust.next({ upcomingPromotion });
+   
+  }
+
+
+  move(from, to, promotionPiece); 
 }
+
+function setGame() {
+  gust.next({
+    board: game.board(),
+    turn: game.turn(),
+  });
+  
+}
+
 
 export function repGame() {
   setGame();
 }
 
-export function handleMove(from, to, promotionPiece) {
-  const promotions = game.moves({ verbose: true }).filter(m => m.promotion);
-
-  if (promotions.some(pawn => pawn.from === from && pawn.to === to)) {
-    try {
-      const promotion = promotions.find(pawn => pawn.from === from && pawn.to === to);
-      const upcomingPromotion = { from, to, color: promotion.color };
-      setGame(upcomingPromotion);
-    } catch (err) {
-      console.log("Invalid move");
-    }
-  }
-
-  try {
-    const upcomingPromotion = gust.getValue();
-    if (!upcomingPromotion) {
-      move(from, to); 
-    }
-    move(from, to, promotionPiece); 
-  } catch (err) {
-    console.log("Error during move:", err);
-  }
-  
-}
-
 export function resetGame() {
   game.reset();
   setGame();
- 
 }
-
-

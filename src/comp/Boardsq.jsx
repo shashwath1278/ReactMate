@@ -6,42 +6,37 @@ import { gust } from '../hex';
 import { handleMove } from '../hex'; 
 import Promotion from './Promotion';
 
+
 const Boardsq = ({ u, dark, position, onMove }) => {
-  const [promo, updatePromo] = useState(null); // To track if promotion is needed
-  
- 
+  const [promo, updatePromo] = useState(null);
+
   const [, drop] = useDrop({
     accept: 'piece',
     drop: (item) => {
       const [fromPosition] = item.id.split('_');
-      
       if (onMove) {
         onMove(fromPosition, position); 
       } else {
-        handleMove(fromPosition, position);
+        handleMove(fromPosition, position); 
       }
     },
   });
 
- try{
-   useEffect(() => {
+  useEffect(() => {
     const newpart = gust.subscribe(({ upcomingPromotion }) => {
       if (upcomingPromotion && upcomingPromotion.to === position) {
         updatePromo(upcomingPromotion);
       }
     });
-    return () => newpart.unsubscribe;
-  }, [position]);
- }
- catch(err){
-       console.error("error with upcoming promotion set to undefined at start of game")
- }
 
-  
+    return () => newpart.unsubscribe(); // Cleanup on unmount
+  }, [position]);
+
   const handlePromotionSelection = (promotionPiece) => {
-    handleMove(promo.from, promo.to, promotionPiece); 
-    updatePromo(null); 
+    handleMove(promo.from, promo.to, promotionPiece); // Pass the promotion piece
+    updatePromo(null);  // Clear promotion state
   };
+  
 
   return (
     <div className='fret' ref={drop}>

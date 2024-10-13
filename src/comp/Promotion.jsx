@@ -1,5 +1,4 @@
-import React from 'react';
-import Gridsq from './Gridsq';
+
 
 const pieces = ['r', 'n', 'q', 'b'];
 

@@ -13,12 +13,13 @@ const Promotion = ({ promotion: { from, to, color }, onSelect }) => {
             <div className={classk} onClick={() => {
 
               onSelect(parts); 
-            }}>
+            }}><div className="promo1">
               <img
+              className="promo-piece"
                 src={require(`../assets/images/${parts}_${color}.png`)}
                 alt=""
-                height={55}
-              />
+                
+              /></div>
             </div>
           
         </div>

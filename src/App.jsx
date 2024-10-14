@@ -13,7 +13,7 @@ function App() {
     const sub = gust.subscribe((gameState) => {
       setBoard(gameState.board); 
       setFlip(gameState.turn === 'b'); 
-      console.log("Game State:", gameState); 
+      
     });
 
     return () => {

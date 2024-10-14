@@ -4,8 +4,8 @@
 
 }
 .chessboard{
-    width:100%;
-    height:100%;
+    width:90%;
+    height:90%;
     flex-wrap: wrap;
     display:flex;
 
@@ -59,7 +59,13 @@
  .dark-class{
     margin-top: 80px;
  }
-
+.promo-piece{
+  height:55px;
+  
+}
+.promotion-array{
+  gap:11px;
+}
  .reset-button {
    
     padding: 10px 20px;
@@ -77,7 +83,6 @@
   
   .chessboard12{
     display: flex;
-   margin-left:-70px;
    
   }
   .chess-board {
@@ -101,6 +106,7 @@
   .flip-button:hover{
     background-color: rgb(0, 115, 255);
   }
+  
   @media (max-width:768px) {
     .piece{
       height:64px;
@@ -113,6 +119,18 @@
      margin-left: 28px;
      margin-top: 25px;
   }
+  .promo-piece{
+  
+    height:50px;
+  }
+  .promotion-array{
+  margin-top: 5px;
+  
+  }
+  .chessboard12{
+    margin-left: -68px;
+  }
+  
   .reset-button{
     
       padding: 10px 20px;
@@ -146,6 +164,17 @@
 .flip-button{
   font-size: 11.5px;
 }
+.promo-piece{
+  
+  height:39px;
+}
+.promotion-array{
+margin-top: 15px;
+
+}
+.chessboard12{
+  margin-left: -40px;
+}
 }
   @media (max-width:600px) {
     .piece{
@@ -166,6 +195,17 @@
       font-size: 12px;
   
   }
+  .promo-piece{
+  
+    height:33px;
+  }
+  .promotion-array{
+  margin-top: 26px;
+  
+  }
+  .chessboard12{
+    margin-left: -38px;
+  }
 }
  @media (max-width:480px) {
   .piece{
@@ -174,10 +214,10 @@
    }
    .chessboard 
    {
-   height:75%;
+   height:72%;
    width:90%; 
    margin-left: 15px;
-   margin-top: 28px;
+   margin-top: 45px;
 }
 .reset-button{
 
@@ -188,6 +228,17 @@
 }
 .flip-button{
   font-size: 10.5px;
+}
+.promo-piece{
+  
+  height:26px;
+}
+.promotion-array{
+margin-top: 28px;
+
+}
+.chessboard12{
+  margin-left: -27px;
 }
  }
  
@@ -215,11 +266,27 @@
   height:25px;
   width: 70px;
 }
+.promo-piece{
+  
+  height:24px;
+}
+.promotion-array{
+margin-top: 26px;
+
+}
+.chessboard12{
+  margin-left: -22px;
+}
  }
  @media (max-width:350px) {
   .piece{
     height:38px;
     width:38px;
+    
+   }
+   .promotion-array{
+    display: flex;
+    flex-direction: column;
    }
    .chessboard 
    {
@@ -227,6 +294,7 @@
    width:90%; 
    margin-left: 12px;
    margin-top: 100px;
+   
 }
 .reset-button{
   
@@ -265,6 +333,19 @@
   height:18px;
   width: 50px;
 }
+.promo-piece{
+  
+    height:20px;
+    width:20px;
+}
+.promotion-array{
+ 
+  margin-top: 26px;
+  
+}
+.chessboard12{
+  margin-left: -18px;
+}
  }
  @media (max-width:300px) {
   .piece{
@@ -289,6 +370,17 @@
   font-size: 6px;
   height:16px;
   width: 47px;
+}
+.promo-piece{
+  
+  height:18px;
+  width: 17.5px;
+}
+.promotion-array{
+margin-top: 35px;
+}
+.chessboard12{
+  margin-left: -18px;
 }
  }
  .button-container {

@@ -1,18 +1,32 @@
 import { useEffect, useState } from "react";
 import Boardsq from "./Boardsq";
-import { resetGame } from "../hex";
+
 
 export default function Chessboard({ board, flip, onMove }) {
   const [displayBoard, setDisplayBoard] = useState([]);
+  const [isFlipped, setIsFlipped] = useState(flip);
 
- 
 
-useEffect(() => {
-  
-  if (board) {
-    setDisplayBoard(flip ? board.flat().reverse() : board.flat());
-  }
-}, [board, flip]);
+  useEffect(() => {
+
+    if (Array.isArray(board)) {
+      setDisplayBoard(board.flat()); 
+    }
+
+    const timeoutId = setTimeout(() => {
+      setIsFlipped(flip);
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [board, flip]);
+
+
+  useEffect(() => {
+   
+    if (Array.isArray(board)) {
+      setDisplayBoard(isFlipped ? board.flat().reverse() : board.flat()); 
+    }
+  }, [isFlipped, board]);
 
 
   function isDarkSquare(i) {
@@ -21,8 +35,8 @@ useEffect(() => {
   }
 
   function getDimensions(i) {
-    const x =!flip?i % 8:Math.abs((i%8)-7);
-    const y = !flip?Math.abs(Math.floor(i / 8 - 7)):Math.floor(i / 8 );
+    const x = !isFlipped ? i % 8 : Math.abs((i % 8) - 7); 
+    const y = !isFlipped ? Math.abs(Math.floor(i / 8 - 7)) : Math.floor(i / 8);
     return { x, y };
   }
 
@@ -41,11 +55,7 @@ useEffect(() => {
           </div>
         ))}
       </div>
-      <div className="reset-container">
-        <button onClick={resetGame} className="reset-button">
-          Reset Game
-        </button>
-      </div>
+      
     </>
   );
 }

@@ -29,12 +29,12 @@ const Boardsq = ({ u, dark, position, onMove }) => {
       }
     });
 
-    return () => newpart.unsubscribe(); // Cleanup on unmount
+    return () => newpart.unsubscribe(); 
   }, [position]);
 
   const handlePromotionSelection = (promotionPiece) => {
-    handleMove(promo.from, promo.to, promotionPiece); // Pass the promotion piece
-    updatePromo(null);  // Clear promotion state
+    handleMove(promo.from, promo.to, promotionPiece); 
+    updatePromo(null); 
   };
   
 

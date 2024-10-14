@@ -21,8 +21,8 @@ const Piece = ({ piece: { type, color }, position }) => {
         className='piece-container piece-design'
         ref={drag}
         style={{ opacity: isDragging ? 0 : 1 }}
-      >
-        <img src={image} height="72px" alt={`${type} ${color} piece`} />
+      ><div>
+        <img   className='piece' src={image}  alt={`${type} ${color} piece`} /></div>
       </div>
     </>
   );

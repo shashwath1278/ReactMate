@@ -16,8 +16,11 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.76);
-
+   
 }
+.piece{
+  height:65px;
+ }
 .new{
     width:650px;
     height:650px;
@@ -58,7 +61,7 @@
  }
 
  .reset-button {
-    margin-top: 20px;
+   
     padding: 10px 20px;
     background-color: #bb8041;
     color: white;
@@ -91,11 +94,207 @@
     color: white;
     height:30px;
     width:80px;
-    margin:10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
   .flip-button:hover{
-    background-color: blue;
+    background-color: rgb(0, 115, 255);
   }
+  @media (max-width:768px) {
+    .piece{
+      height:64px;
+      width:64px;
+     }
+     .chessboard 
+     {
+     height:95%;
+     width:95%; 
+     margin-left: 28px;
+     margin-top: 25px;
+  }
+  .reset-button{
+    
+      padding: 10px 20px;
+      margin-left: 25px;
+      font-size: 12px;
+  
+  }
+  .flip-button{
+      font-size: 12px;
+  }
+}
+@media (max-width:680px) {
+  .piece{
+    height:58px;
+    width:58px;
+   }
+   .chessboard 
+   {
+   height:82%;
+   width:90%; 
+   margin-left: 30px;
+   margin-top: 45px;
+}
+.reset-button{
+  
+    padding: 10px 20px;
+    margin-left: 25px;
+    font-size: 12px;
+
+}
+.flip-button{
+  font-size: 11.5px;
+}
+}
+  @media (max-width:600px) {
+    .piece{
+      height:50px;
+      width:50px;
+     }
+     .chessboard 
+     {
+     height:75%;
+     width:87%; 
+     margin-left: 30px;
+     margin-top: 45px;
+  }
+  .reset-button{
+    
+      padding: 10px 20px;
+      margin-left: 25px;
+      font-size: 12px;
+  
+  }
+}
+ @media (max-width:480px) {
+  .piece{
+    height:48px;
+    width:48px;
+   }
+   .chessboard 
+   {
+   height:75%;
+   width:90%; 
+   margin-left: 15px;
+   margin-top: 28px;
+}
+.reset-button{
+
+    padding: 10px 20px;
+    margin-left: 25px;
+    font-size: 10px;
+
+}
+.flip-button{
+  font-size: 10.5px;
+}
+ }
+ 
+ @media (max-width:400px) {
+  .piece{
+    height:40px;
+    width:40px;
+   }
+   .chessboard 
+   {
+   height:62%;
+   width:90%; 
+   margin-left: 13px;
+   margin-top: 70px;
+}
+.reset-button{
+ 
+    padding: 10px 19px;
+    margin-left: 25px;
+    font-size: 8px;
+
+}
+.flip-button{
+  font-size: 10px;
+  height:25px;
+  width: 70px;
+}
+ }
+ @media (max-width:350px) {
+  .piece{
+    height:38px;
+    width:38px;
+   }
+   .chessboard 
+   {
+   height:55%;
+   width:90%; 
+   margin-left: 12px;
+   margin-top: 100px;
+}
+.reset-button{
+  
+    padding: 9px 18px;
+    margin-left: 25px;
+    font-size: 8px;
+
+}
+.flip-button{
+  font-size: 10px;
+  height:22px;
+  width: 65px;
+}
+ }
+ @media (max-width:320px) {
+  .piece{
+    height:35px;
+    width:35px;
+   }
+   .chessboard 
+   {
+   height:50%;
+   width:90%; 
+   margin-left: 10px;
+   margin-top: 110px;
+}
+.reset-button{
+  
+    padding: 7px 16px;
+    margin-left: 25px;
+    font-size: 6px;
+
+}
+.flip-button{
+  font-size: 6px;
+  height:18px;
+  width: 50px;
+}
+ }
+ @media (max-width:300px) {
+  .piece{
+    height:32px;
+    width:32px;
+   }
+   .chessboard 
+   {
+   height:45%;
+   width:90%; 
+   margin-left: 10px;
+   margin-top: 110px;
+}
+.reset-button{
+  
+    padding: 7px 16px;
+    margin-left: 25px;
+    font-size: 6px;
+
+}
+.flip-button{
+  font-size: 6px;
+  height:16px;
+  width: 47px;
+}
+ }
+ .button-container {
+  position: relative; 
+  display: flex; 
+  gap: 10px;
+  align-items: center;
+  margin-top: 20px; 
+}

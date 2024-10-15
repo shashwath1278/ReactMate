@@ -6,6 +6,7 @@ const game = new Chess();
 export const gust = new BehaviorSubject({
   board: game.board(),
   turn: game.turn(), 
+  
 });
 
 export function move(from, to, promotion) {

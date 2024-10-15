@@ -6,8 +6,7 @@ import { gust } from '../hex';
 import { handleMove } from '../hex'; 
 import Promotion from './Promotion';
 
-
-const Boardsq = ({ u, dark, position, onMove }) => {
+const Boardsq = ({ u, dark, position, onMove, onPromotionStart, onPromotionEnd }) => {
   const [promo, updatePromo] = useState(null);
 
   const [, drop] = useDrop({
@@ -26,23 +25,28 @@ const Boardsq = ({ u, dark, position, onMove }) => {
     const newpart = gust.subscribe(({ upcomingPromotion }) => {
       if (upcomingPromotion && upcomingPromotion.to === position) {
         updatePromo(upcomingPromotion);
+        onPromotionStart(); 
       }
     });
 
     return () => newpart.unsubscribe(); 
-  }, [position]);
+  }, [position, onPromotionStart]);
 
   const handlePromotionSelection = (promotionPiece) => {
     handleMove(promo.from, promo.to, promotionPiece); 
     updatePromo(null); 
+    
   };
-  
-
+  onPromotionEnd();
   return (
     <div className='fret' ref={drop}>
       <Gridsq dark={dark}>
         {promo ? (
-          <Promotion promotion={promo} onSelect={handlePromotionSelection} />
+          <Promotion 
+            promotion={promo} 
+            onSelect={handlePromotionSelection} 
+            onPromotionEnd={onPromotionEnd} 
+          />
         ) : u ? (
           <Piece position={position} piece={u} />
         ) : null}

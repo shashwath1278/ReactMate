@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Boardsq from "./Boardsq";
 
 
-export default function Chessboard({ board, flip, onMove }) {
+export default function Chessboard({ board, flip, onMove,onPromotionStart,onPromotionEnd  }) {
   const [displayBoard, setDisplayBoard] = useState([]);
   const [isFlipped, setIsFlipped] = useState(flip);
 
@@ -51,7 +51,7 @@ export default function Chessboard({ board, flip, onMove }) {
       <div className="chessboard">
         {displayBoard.map((piece, i) => (
           <div key={i} className="sq">
-            <Boardsq position={getPosition(i)} dark={isDarkSquare(i)} u={piece} onMove={onMove} />
+            <Boardsq position={getPosition(i)} dark={isDarkSquare(i)} u={piece} onMove={onMove} onPromotionEnd={onPromotionEnd }  onPromotionStart={onPromotionStart }/>
           </div>
         ))}
       </div>

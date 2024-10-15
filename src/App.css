@@ -4,8 +4,9 @@
 
 }
 .chessboard{
+  margin-top: 30px;
     width:90%;
-    height:90%;
+    height:85%;
     flex-wrap: wrap;
     display:flex;
 
@@ -39,6 +40,17 @@
     height:100%;
     width:100%;
 }
+.auto-flip-button {
+  font-size: 13px;
+  margin-left: 10px;
+  padding: 6px;
+  background-color: #2e7e2f;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
 .piece-container{
   cursor:grab;
   width:100%;
@@ -52,15 +64,14 @@
    max-width: 100%;
    max-height: 100%;
   }
- 
  .white-class{
-    margin-top: -60px;
+  margin-top: -55px;
  }
  .dark-class{
-    margin-top: 80px;
+  margin-top: -55px;
  }
 .promo-piece{
-  height:55px;
+  height:52px;
   
 }
 .promotion-array{
@@ -141,6 +152,9 @@
   .flip-button{
       font-size: 12px;
   }
+  .auto-flip-button {
+    font-size: 11.5px;
+  }
 }
 @media (max-width:680px) {
   .piece{
@@ -175,6 +189,10 @@ margin-top: 15px;
 .chessboard12{
   margin-left: -40px;
 }
+.auto-flip-button {
+  font-size: 11px;
+  
+}
 }
   @media (max-width:600px) {
     .piece{
@@ -205,6 +223,10 @@ margin-top: 15px;
   }
   .chessboard12{
     margin-left: -38px;
+  }
+  .auto-flip-button {
+    font-size: 10px;
+    
   }
 }
  @media (max-width:480px) {
@@ -239,6 +261,10 @@ margin-top: 28px;
 }
 .chessboard12{
   margin-left: -27px;
+}
+.auto-flip-button {
+  font-size: 9.5px;
+  
 }
  }
  
@@ -277,6 +303,10 @@ margin-top: 26px;
 .chessboard12{
   margin-left: -22px;
 }
+.auto-flip-button {
+  font-size: 8.5px;
+  
+}
  }
  @media (max-width:350px) {
   .piece{
@@ -307,6 +337,10 @@ margin-top: 26px;
   font-size: 10px;
   height:22px;
   width: 65px;
+}
+.auto-flip-button {
+  font-size: 7.5px;
+  
 }
  }
  @media (max-width:320px) {
@@ -346,6 +380,10 @@ margin-top: 26px;
 .chessboard12{
   margin-left: -18px;
 }
+.auto-flip-button {
+  font-size: 6.8px;
+  
+}
  }
  @media (max-width:300px) {
   .piece{
@@ -382,6 +420,10 @@ margin-top: 35px;
 .chessboard12{
   margin-left: -18px;
 }
+.auto-flip-button {
+  font-size: 5.5px;
+  
+}
  }
  .button-container {
   position: relative; 
@@ -389,4 +431,8 @@ margin-top: 35px;
   gap: 10px;
   align-items: center;
   margin-top: 20px; 
+}
+
+.auto-flip-button:hover {
+  background-color: #45a049; 
 }

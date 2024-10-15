@@ -4,6 +4,7 @@ const pieces = ['r', 'n', 'q', 'b'];
 
 const Promotion = ({ promotion: { from, to, color }, onSelect }) => {
   const classk = color === 'w' ? 'white-class' : 'dark-class';
+  
 
   return (
     <div className='chessboard12'>

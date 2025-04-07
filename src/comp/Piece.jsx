@@ -25,7 +25,6 @@ const Piece = ({ piece: { type, color }, position }) => {
           className='piece' 
           src={pieceImage} 
           alt={`${type}_${color}`} 
-          style={{ maxWidth: '100%', maxHeight: '100%' }} // Add size constraints
         />
       </div>
     </>

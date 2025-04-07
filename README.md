@@ -1,83 +1,51 @@
-# ♟️ ReactMate Chess
+# ReactChess
 
-![ReactMate Chess](https://img.shields.io/badge/ReactMate-Chess-blue?style=for-the-badge) ![Version](https://img.shields.io/badge/Version-1.0-green?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
+**ReactChess** is an interactive chess game built using React and Chess.js. Play against a friend or test your skills against the computer. The game features a sleek user interface, legal move highlighting, promotion options, and game-over alerts, making it an enjoyable experience for chess enthusiasts.
 
-<div align="center">
-  <img src="./screenshot.png" alt="ReactMate Chess Screenshot" width="600" />
-  <p><i>A modern chess experience built with React</i></p>
-</div>
+## Table of Contents
+- [Features](#features)
+- [Demo](#demo)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-## ✨ Features
+## Features
+- **Interactive Gameplay**: Play chess against another player or AI.
+- **Promotion**: Automatically handle pawn promotions.
+- **Check and Checkmate Alerts**: Visual and alert notifications for check and checkmate situations.
+- **Responsive Design**: Playable on desktops and touch devices.
+- **Game Reset**: Option to reset the game and start anew.
 
-- 🎮 **Multiple Game Modes**: Play against AI or challenge a friend on the same device
-- 🧠 **AI Difficulty Levels**: Easy, Medium, and Hard AI opponents
-- 🔄 **Board Controls**: Flip the board manually or use auto-flip between turns
-- 📊 **Live Evaluation**: Real-time position analysis with visual evaluation bar
-- 🎯 **Move Validation**: Visual highlighting for valid and invalid moves
-- 📱 **Responsive Design**: Play seamlessly on any device
+## Demo
+You can view a live demo of the game [here](https://react-mate.vercel.app/).
 
-## 🚀 Getting Started
+## Technologies Used
+- **React**: For building the user interface.
+- **Chess.js**: For managing game logic and rules.
+- **RxJS**: For state management.
 
-### Prerequisites
+## Installation
+To set up the project locally, follow these steps:
 
-- Node.js (v14+)
-- npm or yarn
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/reactchess.git
+2. Navigate to the project directory:
+   ```bash
+   cd reactchess
+3. Install the dependencies:
+   ```bash
+   npm install
 
-### Installation
+## Usage
 
-```bash
-# Clone the repository
-git clone https://github.com/shashwath1278/ReactMate.git
+1. Start the development server
+   ```bash
+   npm start
+2. Open your browser and navigate to http://localhost:3000 to start playing!
 
-# Navigate to the project directory
-cd ReactMate
+## Contributing
 
-# Install dependencies
-npm install
-# or
-yarn
-
-# Start the development server
-npm start
-# or
-yarn start
-```
-
-## 🎮 How to Play
-
-1. **Start a Game**: Choose to play against the AI or another player
-2. **Make a Move**: Drag and drop chess pieces to valid squares
-3. **Special Controls**:
-   - Use the "Reset Game" button to start over
-   - Toggle "Flip Board" to change perspective
-   - Enable/disable "Auto Flip" to automatically switch sides
-   - Adjust AI difficulty when playing against the computer
-
-## 🛠️ Technologies
-
-- React
-- React DnD (Drag and Drop)
-- Chess.js
-- Modern CSS with animations
-
-## 📱 Responsive Design
-
-ReactMate Chess is fully responsive and works on:
-- Desktop computers
-- Tablets
-- Mobile phones
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-<div align="center">
-  <p>Made with ❤️ by Shashwath</p>
-  <p>© 2025 ReactMate Chess</p>
-</div>
+Contributions are welcome! Please feel free to submit a pull request or open an issue to discuss improvements.     
+   

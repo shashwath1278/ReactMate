@@ -3,10 +3,19 @@ import { BehaviorSubject } from 'rxjs';
 
 const game = new Chess();
 
+// Expose FEN for Stockfish integration
+export function getFEN() {
+  return game.fen();
+}
+
+// Make FEN accessible to window for StockfishEngine
+if (typeof window !== 'undefined') {
+  window.chessFEN = getFEN();
+}
+
 export const gust = new BehaviorSubject({
   board: game.board(),
   turn: game.turn(), 
-  
 });
 
 export function move(from, to, promotion) {
@@ -17,9 +26,7 @@ export function move(from, to, promotion) {
       tempMove.promotion = promotion;  
     }
 
-
     const legalMove = game.move(tempMove); 
-
 
     if (legalMove) {
       setGame();  
@@ -46,33 +53,37 @@ export function move(from, to, promotion) {
   }
 }
 
-
 export function handleMove(from, to, promotionPiece) {
   const promotions = game.moves({ verbose: true }).filter(m => m.promotion);
-
   
   if (promotions.some(pawn => pawn.from === from && pawn.to === to)) {
-  
     const promotion = promotions.find(pawn => pawn.from === from && pawn.to === to);
-    const upcomingPromotion = { from, to, color: promotion.color };
-
     
+    // If this is an AI move with promotion piece directly provided
+    if (promotionPiece) {
+      move(from, to, promotionPiece);
+      return;
+    }
+    
+    // For user moves, show the promotion UI
+    const upcomingPromotion = { from, to, color: promotion.color };
     gust.next({ upcomingPromotion });
-   
+    return;
   }
 
-
-  move(from, to, promotionPiece); 
+  // Regular move (non-promotion)
+  move(from, to); 
 }
 
 function setGame() {
-  gust.next({
+  const state = {
     board: game.board(),
     turn: game.turn(),
-  });
+  };
   
+  gust.next(state);
+  window.chessFEN = getFEN();
 }
-
 
 export function repGame() {
   setGame();

@@ -31,7 +31,7 @@ export default function Chessboard({ board, flip, onMove,onPromotionStart,onProm
 
   function isDarkSquare(i) {
     const { x, y } = getDimensions(i);
-    return (x + y) % 2 === 1;
+    return (x + y) % 2 === 0; // Fix to ensure a1 is dark
   }
 
   function getDimensions(i) {

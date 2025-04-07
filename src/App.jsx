@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import Chessboard from './comp/Chessboard';
 import { gust, repGame, resetGame } from './hex';
 import AIController from './comp/AIController';
 import EvaluationInfo from './comp/EvaluationInfo';
+import SideSelectionModal from './components/SideSelectionModal';
 
 function App({ initialMode = "offline", hideControls = false }) {
   const [board, setBoard] = useState([]);  
@@ -16,6 +17,11 @@ function App({ initialMode = "offline", hideControls = false }) {
   const [difficulty, setDifficulty] = useState('medium');
   const [evaluation, setEvaluation] = useState(0); // 0 means equal, positive for white advantage
   const [isGameInProgress, setIsGameInProgress] = useState(false); // Track if a game is in progress
+  const [showSideModal, setShowSideModal] = useState(false);
+  const [playerSide, setPlayerSide] = useState('white');
+  const [thinking, setThinking] = useState(false); // Add thinking state
+  const [aiColor, setAiColor] = useState('b'); // Default AI plays as black
+  const chessRef = useRef(null); // Reference to chess state
 
   useEffect(() => {
     // Set AI mode based on initialMode
@@ -53,7 +59,8 @@ function App({ initialMode = "offline", hideControls = false }) {
 
       // Update AI turn based on current game state
       if (isAIEnabled) {
-        setIsAITurn(gameState.turn === 'b');
+        // AI's turn if current turn matches AI's color
+        setIsAITurn(gameState.turn === aiColor);
       } else {
         setIsAITurn(false);
       }
@@ -68,7 +75,14 @@ function App({ initialMode = "offline", hideControls = false }) {
     return () => {
       sub.unsubscribe(); 
     };
-  }, [autoFlip, promotionInProgress, isAIEnabled]);  
+  }, [autoFlip, promotionInProgress, isAIEnabled, aiColor]);  
+
+  useEffect(() => {
+    // Handle AI turns
+    if (isAIEnabled && isAITurn && !promotionInProgress && !thinking) {
+      makeAIMove();
+    }
+  }, [isAITurn, isAIEnabled, promotionInProgress, thinking]);
 
   const stopAutoFlip = () => {
     setPromotionInProgress(true);
@@ -100,26 +114,19 @@ function App({ initialMode = "offline", hideControls = false }) {
   };
 
   const toggleAI = () => {
-    // Only show confirmation if a game is in progress
-    if (isGameInProgress) {
-      const confirmed = window.confirm("Are you sure you want to switch game modes? Your current game will be reset.");
-      if (!confirmed) {
-        return; // Cancel if user doesn't confirm
-      }
-    }
-    
-    // Reset the game when toggling AI mode
-    resetGame();
-    
-    const newAIState = !isAIEnabled;
-    setIsAIEnabled(newAIState);
-    
-    if (newAIState) {
-      // Store current auto-flip state and turn it off when AI is enabled
-      setPreviousAutoFlip(autoFlip);
-      setAutoFlip(false);
+    if (!isAIEnabled) {
+      // When switching to AI mode, show the side selection modal
+      setShowSideModal(true);
     } else {
-      // Restore previous auto-flip state when AI is disabled
+      // When switching away from AI mode, just reset
+      if (isGameInProgress) {
+        const confirmed = window.confirm("Are you sure you want to switch game modes? Your current game will be reset.");
+        if (!confirmed) {
+          return;
+        }
+      }
+      resetGame();
+      setIsAIEnabled(false);
       setAutoFlip(previousAutoFlip);
     }
   };
@@ -141,6 +148,84 @@ function App({ initialMode = "offline", hideControls = false }) {
     const currentIndex = levels.indexOf(difficulty);
     const nextIndex = (currentIndex + 1) % levels.length;
     setDifficulty(levels[nextIndex]);
+  };
+
+  const handleSelectSide = (side) => {
+    setPlayerSide(side);
+    setShowSideModal(false);
+    
+    // Start a new game with the AI
+    resetGame();
+    
+    // Set up the game with the selected side
+    setIsAIEnabled(true);
+    
+    if (side === 'black') {
+      // Player chose black, so AI plays white
+      setAiColor('w');
+      setFlip(true);
+      
+      // AI should make the first move as white
+      setTimeout(() => {
+        // Update AI turn flag immediately
+        setIsAITurn(true);
+        makeAIMove('w');
+      }, 300);
+    } else {
+      // Player chose white, so AI plays black
+      setAiColor('b');
+      setFlip(false);
+      setIsAITurn(false);
+    }
+    
+    // Store previous auto-flip state
+    setPreviousAutoFlip(autoFlip);
+    setAutoFlip(false);
+  };
+
+  // Add a function to make the AI move
+  const makeAIMove = (color = aiColor) => {
+    // Get the current chess state
+    const chess = chessRef.current;
+    
+    if (!chess || !isAIEnabled || !isAITurn) {
+      return;
+    }
+    
+    // Update the thinking status
+    setThinking(true);
+    
+    // Use setTimeout to show the thinking indicator for at least a moment
+    setTimeout(() => {
+      // Get valid moves
+      const validMoves = chess.moves();
+      
+      if (validMoves.length === 0) {
+        // Game is over
+        setThinking(false);
+        return;
+      }
+      
+      // Select a random move (or use your existing AI logic)
+      const moveIndex = Math.floor(Math.random() * validMoves.length);
+      const move = validMoves[moveIndex];
+      
+      // Make the move for the correct color
+      chess.move(move);
+      
+      // Update the game state
+      gust.publish({
+        board: chess.board(),
+        turn: chess.turn(),
+        isCheck: chess.isCheck(),
+        isCheckmate: chess.isCheckmate(),
+        isDraw: chess.isDraw(),
+        history: chess.history(),
+      });
+      
+      // Reset thinking status
+      setThinking(false);
+    }, 500); // Minimum thinking time to show the indicator
   };
 
   // Calculate evaluation bar height based on advantage
@@ -168,7 +253,7 @@ function App({ initialMode = "offline", hideControls = false }) {
                     AI is thinking...
                   </>
                 ) : (
-                  "Your turn"
+                  `Your turn (${playerSide === 'white' ? 'White' : 'Black'})`
                 )}
               </div>
               
@@ -205,7 +290,7 @@ function App({ initialMode = "offline", hideControls = false }) {
           {/* Hidden AI engine controller */}
           {isAIEnabled && (
             <div style={{display: 'none'}}>
-              <AIController isAITurn={isAITurn} color="b" difficulty={difficulty} />
+              <AIController isAITurn={isAITurn} color={aiColor} difficulty={difficulty} />
             </div>
           )}
         </div>
@@ -228,6 +313,13 @@ function App({ initialMode = "offline", hideControls = false }) {
           </div>
         </div>
       </div>
+      
+      {/* Add the modal to your render method */}
+      <SideSelectionModal
+        isOpen={showSideModal}
+        onClose={() => setShowSideModal(false)}
+        onSelectSide={handleSelectSide}
+      />
     </div>
   );
 }

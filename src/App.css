@@ -1,541 +1,571 @@
 *{
     margin:0;
     padding:0;
-
 }
+
 .chessboard{
-  margin-top: 30px;
-    width:90%;
-    height:85%;
+    margin-top: 30px;
+    width: 90%;
+    height: 85%;
     flex-wrap: wrap;
-    display:flex;
-
+    display: flex;
+    border: 4px solid #2c3e50; /* Add border to entire chess board */
+    border-radius: 4px; /* Slightly rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+    overflow: hidden; /* Ensure squares don't overflow the border */
+    font-size: 0; /* Remove any whitespace between inline elements */
 }
+
 .App{
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.76);
-   
+    background-color: #272727;
 }
+
 .piece{
-  height:65px;
- }
-.new{
-    width:650px;
-    height:650px;
+    height: 45px; /* Increase from 35px to 45px */
+    width: auto; /* Let width adjust based on aspect ratio */
+    object-fit: contain;
+    max-width: 80%; /* Prevent pieces from getting too large */
+    max-height: 80%;
 }
+
+/* Center pieces in squares */
+.piece-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: relative; /* For positioning pieces properly */
+}
+
+.new {
+    width: 800px;
+    height: auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .sq{
     width:12.5%;
     height:12.5%;
+    box-sizing: border-box;
+    padding: 0; /* Remove padding between squares */
+    margin: 0; /* Remove margin between squares */
+    font-size: initial; /* Reset font size for content inside squares */
 }
+
+/* Update to blue colors for chess squares */
 .square-dark{
-    background-color: rgba(195, 203, 214, 0.96);
+    background-color: #4682B4; /* Steel blue for dark squares */
 }
+
 .square-light{
-    background-color: rgb(69, 116, 182);
+    background-color: #FFFFFF; /* Pure white for light squares */
 }
+
 .fret{
     height:100%;
     width:100%;
-}
-.auto-flip-button {
-  font-size: 13px;
-  margin-left: 10px;
-  padding: 6px;
-  background-color: #2e7e2f;
-  color: white;
-  border: none;
-  border-radius: 9px;
-  cursor: pointer;
+    position: relative; /* Added to position the highlights */
 }
 
-.piece-container{
-  cursor:grab;
-  width:100%;
-  height:100%;
-  align-items: center;
-  justify-content: center;
-  display:flex;
+/* Highlight styles for move validation */
+.valid-move-highlight {
+    background-color: rgba(76, 175, 80, 0.5); /* Green with transparency */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Allow click-through */
+    transition: opacity 0.2s ease;
 }
-.piece-design{
 
-   max-width: 100%;
-   max-height: 100%;
-  }
- .white-class{
-  margin-top: -55px;
- }
- .dark-class{
-  margin-top: -55px;
- }
-.promo-piece{
-  height:52px;
-  
+.invalid-move-highlight {
+    background-color: rgba(244, 67, 54, 0.5); /* Red with transparency */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Allow click-through */
+    transition: opacity 0.2s ease;
 }
-.promotion-array{
-  gap:11px;
-}
- .reset-button {
-   
+
+/* Buttons */
+.reset-button {
     padding: 10px 20px;
-    background-color: #bb8041;
+    font-size: 14px;
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-  
-  }
-  
-  .reset-button:hover {
-    background-color: #bc6954;
-  }
-  
-  .chessboard12{
-    display: flex;
-   
-  }
-  .chess-board {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-  }
-  
-  .chess-board div {
-    transform: rotate(0deg);
-  }
-  .flip-button{
-    background-color:rgb(0, 115, 255);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    margin: 5px;
+}
+
+.reset-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.reset-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.flip-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: linear-gradient(135deg, #2196F3, #0D47A1);
     color: white;
-    height:30px;
-    width:80px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-  }
-  .flip-button:hover{
-    background-color: rgb(0, 115, 255);
-  }
-  
-  @media (max-width:768px) {
-    .piece{
-      height:64px;
-      width:64px;
-     }
-     .chessboard 
-     {
-     height:95%;
-     width:95%; 
-     margin-left: 28px;
-     margin-top: 25px;
-  }
-  .promo-piece{
-  
-    height:50px;
-  }
-  .promotion-array{
-  margin-top: 5px;
-  
-  }
-  .chessboard12{
-    margin-left: -68px;
-  }
-  
-  .reset-button{
-    
-      padding: 10px 20px;
-      margin-left: 25px;
-      font-size: 12px;
-  
-  }
-  .flip-button{
-      font-size: 12px;
-  }
-  .auto-flip-button {
-    font-size: 11.5px;
-  }
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    margin: 5px;
 }
-@media (max-width:680px) {
-  .piece{
-    height:58px;
-    width:58px;
-   }
-   .chessboard 
-   {
-   height:82%;
-   width:90%; 
-   margin-left: 30px;
-   margin-top: 45px;
+
+.flip-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
-.reset-button{
-  
+
+.flip-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.auto-flip-button {
+    font-size: 14px;
     padding: 10px 20px;
-    margin-left: 25px;
-    font-size: 12px;
-
-}
-.flip-button{
-  font-size: 11.5px;
-}
-.promo-piece{
-  
-  height:39px;
-}
-.promotion-array{
-margin-top: 15px;
-
-}
-.chessboard12{
-  margin-left: -40px;
-}
-.auto-flip-button {
-  font-size: 11px;
-  
-}
-}
-  @media (max-width:600px) {
-    .piece{
-      height:50px;
-      width:50px;
-     }
-     .chessboard 
-     {
-     height:75%;
-     width:87%; 
-     margin-left: 30px;
-     margin-top: 45px;
-  }
-  .reset-button{
-    
-      padding: 10px 20px;
-      margin-left: 25px;
-      font-size: 12px;
-  
-  }
-  .promo-piece{
-  
-    height:33px;
-  }
-  .promotion-array{
-  margin-top: 26px;
-  
-  }
-  .chessboard12{
-    margin-left: -38px;
-  }
-  .auto-flip-button {
-    font-size: 10px;
-    
-  }
-}
- @media (max-width:480px) {
-  .piece{
-    height:48px;
-    width:48px;
-   }
-   .chessboard 
-   {
-   height:72%;
-   width:90%; 
-   margin-left: 15px;
-   margin-top: 45px;
-}
-.reset-button{
-
-    padding: 10px 20px;
-    margin-left: 25px;
-    font-size: 10px;
-
-}
-.flip-button{
-  font-size: 10.5px;
-}
-.promo-piece{
-  
-  height:26px;
-}
-.promotion-array{
-margin-top: 28px;
-
-}
-.chessboard12{
-  margin-left: -27px;
-}
-.auto-flip-button {
-  font-size: 9.5px;
-  
-}
- }
- 
- @media (max-width:400px) {
-  .piece{
-    height:40px;
-    width:40px;
-   }
-   .chessboard 
-   {
-   height:62%;
-   width:90%; 
-   margin-left: 13px;
-   margin-top: 70px;
-}
-.reset-button{
- 
-    padding: 10px 19px;
-    margin-left: 25px;
-    font-size: 8px;
-
-}
-.flip-button{
-  font-size: 10px;
-  height:25px;
-  width: 70px;
-}
-.promo-piece{
-  
-  height:24px;
-}
-.promotion-array{
-margin-top: 26px;
-
-}
-.chessboard12{
-  margin-left: -22px;
-}
-.auto-flip-button {
-  font-size: 8.5px;
-  
-}
- }
- @media (max-width:350px) {
-  .piece{
-    height:38px;
-    width:38px;
-    
-   }
-   .promotion-array{
-    display: flex;
-    flex-direction: column;
-   }
-   .chessboard 
-   {
-   height:55%;
-   width:90%; 
-   margin-left: 12px;
-   margin-top: 100px;
-   
-}
-.reset-button{
-  
-    padding: 9px 18px;
-    margin-left: 25px;
-    font-size: 8px;
-
-}
-.flip-button{
-  font-size: 10px;
-  height:22px;
-  width: 65px;
-}
-.auto-flip-button {
-  font-size: 7.5px;
-  
-}
- }
- @media (max-width:320px) {
-  .piece{
-    height:35px;
-    width:35px;
-   }
-   .chessboard 
-   {
-   height:50%;
-   width:90%; 
-   margin-left: 10px;
-   margin-top: 110px;
-}
-.reset-button{
-  
-    padding: 7px 16px;
-    margin-left: 25px;
-    font-size: 6px;
-
-}
-.flip-button{
-  font-size: 6px;
-  height:18px;
-  width: 50px;
-}
-.promo-piece{
-  
-    height:20px;
-    width:20px;
-}
-.promotion-array{
- 
-  margin-top: 26px;
-  
-}
-.chessboard12{
-  margin-left: -18px;
-}
-.auto-flip-button {
-  font-size: 6.8px;
-  
-}
- }
- @media (max-width:300px) {
-  .piece{
-    height:32px;
-    width:32px;
-   }
-   .chessboard 
-   {
-   height:45%;
-   width:90%; 
-   margin-left: 10px;
-   margin-top: 110px;
-}
-.reset-button{
-  
-    padding: 7px 16px;
-    margin-left: 25px;
-    font-size: 6px;
-
-}
-.flip-button{
-  font-size: 6px;
-  height:16px;
-  width: 47px;
-}
-.promo-piece{
-  
-  height:18px;
-  width: 17.5px;
-}
-.promotion-array{
-margin-top: 35px;
-}
-.chessboard12{
-  margin-left: -18px;
-}
-.auto-flip-button {
-  font-size: 5.5px;
-  
-}
- }
- .button-container {
-  position: relative; 
-  display: flex; 
-  gap: 10px;
-  align-items: center;
-  margin-top: 20px; 
+    background: linear-gradient(135deg, #3F51B5, #1A237E);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    margin: 5px;
 }
 
 .auto-flip-button:hover {
-  background-color: #45a049; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* AI Integration Styles */
+.auto-flip-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Updated AI Integration Styles */
 .evaluation-container {
-  margin: 10px 0;
-  display: flex;
-  justify-content: center;
+    display: none;
 }
 
-.evaluation-bubble {
-  background-color: #2c3e50;
-  border-radius: 10px;
-  padding: 8px 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  font-size: 14px;
-  color: white;
-  margin-top: 10px;
-}
-
-.thinking-indicator {
-  color: white;
-  font-size: 14px;
-  margin-top: 5px;
-  text-align: center;
+.side-panel-evaluation-container {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
 }
 
 .ai-toggle-button {
-  font-size: 13px;
-  margin-left: 10px;
-  padding: 6px;
-  background-color: #8e44ad;
-  color: white;
-  border: none;
-  border-radius: 9px;
-  cursor: pointer;
+    font-size: 14px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #9C27B0, #4A148C);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    margin: 5px;
 }
 
 .ai-toggle-button:hover {
-  background-color: #7d3c98;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ai-toggle-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .difficulty-button {
-  font-size: 13px;
-  margin-left: 10px;
-  padding: 6px;
-  background-color: #e67e22;
-  color: white;
-  border: none;
-  border-radius: 9px;
-  cursor: pointer;
+    font-size: 14px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #FF9800, #E65100);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    margin: 5px;
 }
 
 .difficulty-button:hover {
-  background-color: #d35400;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Media queries for the new buttons */
+.difficulty-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    max-width: 100%;
+}
+
+/* Improved chess container layout */
+.chess-container {
+    display: grid;
+    grid-template-columns: 150px 600px; /* Fixed width columns: side panel + board */
+    width: 100%;
+    justify-content: center;
+    position: relative;
+}
+
+.board-container {
+    width: 600px;
+    height: 600px;
+    flex-shrink: 0;
+    grid-column: 2; /* Always place board in second column */
+}
+
+.side-panel {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    padding: 0 10px;
+    flex-shrink: 0;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    grid-column: 1; /* Always place panel in first column */
+    align-self: center;
+}
+
+/* When AI is not enabled, keep the board centered */
+.board-only {
+    grid-column: 1 / span 2; /* Span across both columns when side panel is hidden */
+    justify-self: center;
+}
+
+.evaluation-bubble {
+    background-color: #2c3e50;
+    border-radius: 10px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    color: white;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.thinking-indicator {
+    color: #333;
+    font-size: 14px;
+    font-weight: bold; /* Make the text bold */
+    text-align: center;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Hourglass animation for AI thinking */
+.hourglass {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    animation: hourglass-rotate 1.5s linear infinite;
+}
+
+.hourglass::before,
+.hourglass::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background-color: #333;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hourglass::before {
+    animation: hourglass-flow 1.5s linear infinite;
+    transform-origin: 50% 100%;
+}
+
+.hourglass::after {
+    animation: hourglass-flow 1.5s linear infinite reverse;
+    transform-origin: 50% 0%;
+}
+
+@keyframes hourglass-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes hourglass-flow {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(0.3);
+    }
+}
+
+/* Position difficulty button in side panel */
+.side-panel .difficulty-button {
+    font-size: 12px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Hide difficulty button in main controls when in AI mode */
+.controls-container .ai-mode-active .difficulty-button {
+    display: none;
+}
+
+/* Move buttons outside of the board container */
+.controls-container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Evaluation bar */
+.evaluation-bar-container {
+    height: 300px;
+    width: 30px;
+    background-color: #e2e8f0;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    border: 2px solid #cbd5e1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.evaluation-bar {
+    width: 100%;
+    background-color: #1e293b;
+    position: absolute;
+    bottom: 0;
+    transition: height 0.3s ease;
+}
+
+.eval-white {
+    background-color: #f8fafc;
+}
+
+.eval-black {
+    background-color: #1e293b;
+}
+
+/* Button ripple effect */
+.button-ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* Responsive design for larger screens */
+@media (min-width: 1200px) {
+    .new {
+        width: 700px;
+        height: 700px;
+    }
+    
+    .piece {
+        height: 70px;
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 850px) {
+    .new {
+        width: 95%;
+        padding: 0.5rem;
+    }
+    
+    .chess-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .board-container, .board-only {
+        grid-column: auto;
+        width: 100%;
+    }
+    
+    .side-panel {
+        width: 100%;
+        flex-direction: row;
+        margin-right: 0;
+        margin-bottom: 10px;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .side-panel .difficulty-button {
+        font-size: 11px;
+        padding: 6px 10px;
+        margin: 0;
+    }
+    
+    .evaluation-bar-container {
+        height: 20px;
+        width: 150px;
+    }
+    
+    .evaluation-bar {
+        height: 100% !important;
+        width: var(--evaluation-width, 50%);
+        bottom: auto;
+        left: 0;
+        transition: width 0.3s ease;
+    }
+}
+
 @media (max-width: 768px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 11.5px;
-  }
-}
-
-@media (max-width: 680px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 600px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 10px;
-  }
+    .piece{
+        height:64px;
+        width:64px;
+    }
+    .chessboard {
+        height:95%;
+        width:95%; 
+        margin-left: 28px;
+        margin-top: 25px;
+    }
+    .reset-button{
+        padding: 10px 20px;
+        margin-left: 25px;
+        font-size: 12px;
+    }
+    .flip-button{
+        font-size: 12px;
+    }
+    .auto-flip-button, .ai-toggle-button, .difficulty-button {
+        font-size: 11.5px;
+    }
+    .chess-container {
+        flex-direction: column;
+    }
+    
+    .side-panel {
+        width: 100%;
+        flex-direction: row;
+        margin-right: 0;
+        margin-bottom: 10px;
+        justify-content: space-around;
+    }
+    
+    .evaluation-bar-container {
+        height: 20px;
+        width: 150px;
+        margin: 0;
+    }
+    
+    .evaluation-bar {
+        height: 100% !important;
+        width: 50%;
+        bottom: auto;
+        left: 0;
+        transition: width 0.3s ease;
+    }
 }
 
 @media (max-width: 480px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 9.5px;
-  }
-}
-
-@media (max-width: 400px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 8.5px;
-  }
-}
-
-@media (max-width: 350px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 7.5px;
-  }
-}
-
-@media (max-width: 320px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 6.8px;
-  }
-}
-
-@media (max-width: 300px) {
-  .ai-toggle-button, .difficulty-button {
-    font-size: 5.5px;
-  }
+    .piece{
+        height:48px;
+        width:48px;
+    }
+    .chessboard {
+        height:72%;
+        width:90%; 
+        margin-left: 15px;
+        margin-top: 45px;
+    }
+    .new {
+        width: 95%;
+        height: auto;
+        padding: 0.5rem;
+    }
+    .button-container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .reset-button, .flip-button {
+        margin: 5px;
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+    .auto-flip-button, .ai-toggle-button, .difficulty-button {
+        font-size: 11px;
+        margin: 5px;
+    }
 }

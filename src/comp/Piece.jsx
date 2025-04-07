@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDrag, DragPreviewImage } from 'react-dnd';
 
 const Piece = ({ piece: { type, color }, position }) => {
@@ -10,19 +10,23 @@ const Piece = ({ piece: { type, color }, position }) => {
     }),
   });
 
-  const image = require(`../assets/images/${type}_${color}.png`);
-
-   
+  // Make sure the image is properly loaded
+  const pieceImage = require(`../assets/images/${type}_${color}.png`);
   
   return (
     <>
-      <DragPreviewImage connect={preview} src={image} />
+      <DragPreviewImage connect={preview} src={pieceImage} />
       <div
-        className='piece-container piece-design'
+        className='piece-container'
         ref={drag}
         style={{ opacity: isDragging ? 0 : 1 }}
-      ><div>
-        <img   className='piece' src={image}  alt={`${type} ${color} piece`} /></div>
+      >
+        <img 
+          className='piece' 
+          src={pieceImage} 
+          alt={`${type}_${color}`} 
+          style={{ maxWidth: '100%', maxHeight: '100%' }} // Add size constraints
+        />
       </div>
     </>
   );

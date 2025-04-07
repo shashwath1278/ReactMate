@@ -93,3 +93,35 @@ export function resetGame() {
   game.reset();
   setGame();
 }
+
+// Add this function to validate moves
+export function validateMove(from, to) {
+  // Get the current chess game state
+  const chess = getCurrentChessInstance();
+  
+  // Check if the move is valid according to chess rules
+  try {
+    const move = chess.move({
+      from: from,
+      to: to,
+      promotion: 'q' // Default to queen for checking validity
+    });
+    
+    // If move is valid, undo it (we're just checking, not making the move)
+    if (move) {
+      chess.undo();
+      return true;
+    }
+    return false;
+  } catch (e) {
+    // If there's an error, the move is invalid
+    return false;
+  }
+}
+
+// Helper function to get current chess instance
+function getCurrentChessInstance() {
+  // Access your chess.js instance from your current code
+  // This implementation depends on how you've structured your code
+  return game; // Or however you access your chess instance
+}

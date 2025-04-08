@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useStockfish } from './StockfishEngine';
-import { handleMove } from '../hex';
+import { handleMove, getFEN } from '../hex';
+import { makeCustomAIMove } from '../utils/CustomAI';
+import { Chess } from 'chess.js';
 
-const AIController = ({ isAITurn, color, difficulty = 'medium' }) => {
+const AIController = ({ isAITurn, color, difficulty = 'easy' }) => {
   const [thinking, setThinking] = useState(false);
   
-  // Map difficulty settings to Stockfish depth
-  const depthMap = {
-    easy: 10,
-    medium: 16,
-    hard: 22
+  // Set depth based on difficulty
+  const getDepthForDifficulty = (diff) => {
+    switch(diff) {
+      case 'easy': return 1;
+      case 'medium': return 5;  // Medium will use lower depth Stockfish
+      case 'hard': return 10;   // Hard uses full depth
+      default: return 5;
+    }
   };
   
-  const { getBestMove } = useStockfish(depthMap[difficulty] || 16);
+  const depthValue = getDepthForDifficulty(difficulty);
+  
+  const { getBestMove, calculateMoveWithDepth } = useStockfish(depthValue);
 
   useEffect(() => {
     if (isAITurn && !thinking) {
@@ -22,13 +29,45 @@ const AIController = ({ isAITurn, color, difficulty = 'medium' }) => {
         await new Promise(resolve => setTimeout(resolve, 500));
         
         try {
+          // Use custom AI for easy and sometimes for medium difficulties
+          if (difficulty === 'easy' || (difficulty === 'medium' && Math.random() < 0.35)) {
+            // Create a new Chess instance with the current game state
+            // This ensures we always have a valid chess instance
+            const fen = getFEN();
+            const chess = new Chess(fen);
+            
+            // Make sure we have a valid chess instance before proceeding
+            if (chess) {
+              const move = makeCustomAIMove(chess, difficulty);
+              
+              if (move) {
+                handleMove(move.from, move.to, move.promotion);
+                setThinking(false);
+                return;
+              }
+            }
+          }
+          
+          // For medium difficulty with Stockfish (65% chance)
+          if (difficulty === 'medium') {
+            // Use a lower depth for medium difficulty
+            const move = await calculateMoveWithDepth(5);
+            if (move) {
+              const { from, to, promotion } = move;
+              handleMove(from, to, promotion);
+              setThinking(false);
+              return;
+            }
+          }
+
+          // For hard difficulty or fallback, use full-depth Stockfish
           const move = await getBestMove();
           if (move) {
             const { from, to, promotion } = move;
-            handleMove(from, to, promotion || 'q'); // Default to queen if no promotion specified
+            handleMove(from, to, promotion);
           }
-        } catch (err) {
-          console.error("Error making AI move:", err);
+        } catch (error) {
+          console.error("AI move error:", error);
         } finally {
           setThinking(false);
         }
@@ -36,13 +75,9 @@ const AIController = ({ isAITurn, color, difficulty = 'medium' }) => {
       
       makeAIMove();
     }
-  }, [isAITurn, thinking, getBestMove]);
+  }, [isAITurn, thinking, difficulty, getBestMove, calculateMoveWithDepth]);
 
-  return (
-    <div className="ai-status">
-      {thinking && isAITurn && <div className="thinking-indicator">AI is thinking...</div>}
-    </div>
-  );
+  return null;
 };
 
 export default AIController;

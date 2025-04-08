@@ -60,6 +60,29 @@ export const useStockfish = (depth = 18) => {
     });
   };
 
+  /**
+   * Calculate the best move with a specific depth setting
+   * This allows for different difficulty levels
+   */
+  const calculateMoveWithDepth = (specificDepth) => {
+    return new Promise((resolve) => {
+      const fen = getFEN(); // Use the getFEN function directly from hex.js
+      
+      stockfish.current.postMessage(`position fen ${fen}`);
+      stockfish.current.postMessage(`go depth ${specificDepth}`); // Use the specific depth
+
+      const messageHandler = (e) => {
+        if (e.data.startsWith('bestmove')) {
+          const bestMove = e.data.split(' ')[1];
+          stockfish.current.removeEventListener('message', messageHandler);
+          resolve(parseStockfishMove(bestMove));
+        }
+      };
+
+      stockfish.current.addEventListener('message', messageHandler);
+    });
+  };
+
   const parseStockfishMove = (move) => {
     if (!move || move === '(none)') {
       return null;
@@ -70,7 +93,7 @@ export const useStockfish = (depth = 18) => {
     return { from, to, promotion };
   };
 
-  return { getBestMove, evaluation };
+  return { getBestMove, calculateMoveWithDepth, evaluation };
 };
 
 const parseEvaluation = (message) => {

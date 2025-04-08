@@ -5,6 +5,7 @@ import { gust, repGame, resetGame } from './hex';
 import AIController from './comp/AIController';
 import EvaluationInfo from './comp/EvaluationInfo';
 import SideSelectionModal from './components/SideSelectionModal';
+import { makeCustomAIMove } from './utils/CustomAI'; // Import the custom AI function
 
 function App({ initialMode = "offline", hideControls = false }) {
   const [board, setBoard] = useState([]);  
@@ -14,7 +15,7 @@ function App({ initialMode = "offline", hideControls = false }) {
   const [promotionInProgress, setPromotionInProgress] = useState(false); 
   const [isAIEnabled, setIsAIEnabled] = useState(initialMode === "ai");
   const [isAITurn, setIsAITurn] = useState(false);
-  const [difficulty, setDifficulty] = useState('medium');
+  const [difficulty, setDifficulty] = useState('easy');
   const [evaluation, setEvaluation] = useState(0); // 0 means equal, positive for white advantage
   const [isGameInProgress, setIsGameInProgress] = useState(false); // Track if a game is in progress
   const [showSideModal, setShowSideModal] = useState(false);
@@ -197,21 +198,25 @@ function App({ initialMode = "offline", hideControls = false }) {
     
     // Use setTimeout to show the thinking indicator for at least a moment
     setTimeout(() => {
-      // Get valid moves
-      const validMoves = chess.moves();
-      
-      if (validMoves.length === 0) {
-        // Game is over
-        setThinking(false);
-        return;
+      if (difficulty === 'easy' || difficulty === 'medium') {
+        makeCustomAIMove(chess, difficulty, color);
+      } else {
+        // Get valid moves
+        const validMoves = chess.moves();
+        
+        if (validMoves.length === 0) {
+          // Game is over
+          setThinking(false);
+          return;
+        }
+        
+        // Select a random move (or use your existing AI logic)
+        const moveIndex = Math.floor(Math.random() * validMoves.length);
+        const move = validMoves[moveIndex];
+        
+        // Make the move for the correct color
+        chess.move(move);
       }
-      
-      // Select a random move (or use your existing AI logic)
-      const moveIndex = Math.floor(Math.random() * validMoves.length);
-      const move = validMoves[moveIndex];
-      
-      // Make the move for the correct color
-      chess.move(move);
       
       // Update the game state
       gust.publish({

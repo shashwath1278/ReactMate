@@ -1,0 +1,62 @@
+.ai-chess-board {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.difficulty-indicator {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #4A148C;
+}
+
+/* Chess board container */
+.ai-board-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* Maintain square aspect ratio */
+}
+
+/* AI thinking indicator */
+.ai-thinking {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: #4A148C;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.ai-thinking::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #4A148C;
+  margin-right: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+}

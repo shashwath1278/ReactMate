@@ -9,7 +9,7 @@
 
 A modern, feature-rich chess application with multiple play modes and adaptive AI.
 
-[View Demo](https://react-mate.vercel.app/) | [Report Bug](https://github.com/shashwath1278/ReactMate/issues) | [Request Feature](https://github.com/shashwath1278/ReactMate/issues)
+[View Demo](https://react-mate--two.vercel.app/) | [Report Bug](https://github.com/shashwath1278/ReactMate/issues) | [Request Feature](https://github.com/shashwath1278/ReactMate/issues)
 
 ![Chess App Screenshot](./screenshot.png)
 

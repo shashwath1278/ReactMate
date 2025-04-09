@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import Boardsq from "./Boardsq";
 
-
-export default function Chessboard({ board, flip, onMove,onPromotionStart,onPromotionEnd  }) {
+export default function Chessboard({ board, flip, onMove, onPromotionStart, onPromotionEnd, isAIGame, aiColor }) {
   const [displayBoard, setDisplayBoard] = useState([]);
   const [isFlipped, setIsFlipped] = useState(flip);
 
-
   useEffect(() => {
-
     if (Array.isArray(board)) {
-      setDisplayBoard(board.flat()); 
+      setDisplayBoard(board.flat());
     }
 
     const timeoutId = setTimeout(() => {
@@ -20,14 +17,11 @@ export default function Chessboard({ board, flip, onMove,onPromotionStart,onProm
     return () => clearTimeout(timeoutId);
   }, [board, flip]);
 
-
   useEffect(() => {
-   
     if (Array.isArray(board)) {
-      setDisplayBoard(isFlipped ? board.flat().reverse() : board.flat()); 
+      setDisplayBoard(isFlipped ? board.flat().reverse() : board.flat());
     }
   }, [isFlipped, board]);
-
 
   function isDarkSquare(i) {
     const { x, y } = getDimensions(i);
@@ -35,7 +29,7 @@ export default function Chessboard({ board, flip, onMove,onPromotionStart,onProm
   }
 
   function getDimensions(i) {
-    const x = !isFlipped ? i % 8 : Math.abs((i % 8) - 7); 
+    const x = !isFlipped ? i % 8 : Math.abs((i % 8) - 7);
     const y = !isFlipped ? Math.abs(Math.floor(i / 8 - 7)) : Math.floor(i / 8);
     return { x, y };
   }
@@ -51,11 +45,20 @@ export default function Chessboard({ board, flip, onMove,onPromotionStart,onProm
       <div className="chessboard">
         {displayBoard.map((piece, i) => (
           <div key={i} className="sq">
-            <Boardsq position={getPosition(i)} dark={isDarkSquare(i)} u={piece} onMove={onMove} onPromotionEnd={onPromotionEnd }  onPromotionStart={onPromotionStart }/>
+            <Boardsq 
+              position={getPosition(i)} 
+              dark={isDarkSquare(i)} 
+              u={piece} 
+              onMove={onMove} 
+              onPromotionEnd={onPromotionEnd} 
+              onPromotionStart={onPromotionStart}
+              isAIGame={isAIGame}
+              aiColor={aiColor}
+              flip={flip}
+            />
           </div>
         ))}
       </div>
-      
     </>
   );
 }

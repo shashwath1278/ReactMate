@@ -288,7 +288,9 @@ function App({ initialMode = "offline", hideControls = false }) {
               board={board} 
               flip={flip} 
               onPromotionStart={stopAutoFlip} 
-              onPromotionEnd={resumeAutoFlip}  
+              onPromotionEnd={resumeAutoFlip}
+              isAIGame={isAIEnabled}  
+              aiColor={aiColor}  
             />
           </div>
           

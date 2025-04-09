@@ -306,10 +306,18 @@ function App({ initialMode = "offline", hideControls = false }) {
             <button className="reset-button" onClick={(e) => {createRipple(e); handleResetGame();}}>
               Reset Game
             </button>
-            <button className="flip-button" onClick={(e) => {createRipple(e); setFlip(prevFlip => !prevFlip);}}>
+            <button 
+              className="flip-button" 
+              onClick={(e) => {createRipple(e); setFlip(prevFlip => !prevFlip);}}
+              disabled={isAIEnabled} // Disable flip button in AI mode
+            >
               Flip Board
             </button>
-            <button className="auto-flip-button" onClick={(e) => {createRipple(e); setAutoFlip(prev => !prev);}} disabled={isAIEnabled}>
+            <button 
+              className="auto-flip-button" 
+              onClick={(e) => {createRipple(e); setAutoFlip(prev => !prev);}} 
+              disabled={isAIEnabled} // Disable auto-flip in AI mode
+            >
               {autoFlip ? 'Disable Auto Flip' : 'Enable Auto Flip'}
             </button>
             <button className="ai-toggle-button" onClick={(e) => {createRipple(e); toggleAI();}}>

@@ -6,7 +6,7 @@ import { gust } from '../hex';
 import { handleMove, validateMove } from '../hex';
 import Promotion from './Promotion';
 
-const Boardsq = ({ u, dark, position, onMove, onPromotionStart, onPromotionEnd }) => {
+const Boardsq = ({ u, dark, position, onMove, onPromotionStart, onPromotionEnd, flip }) => {
   const [promo, updatePromo] = useState(null);
   const [moveHighlight, setMoveHighlight] = useState(null);
 
@@ -65,7 +65,8 @@ const Boardsq = ({ u, dark, position, onMove, onPromotionStart, onPromotionEnd }
         {promo ? (
           <Promotion 
             promotion={promo} 
-            onSelect={handlePromotionSelection} 
+            onSelect={handlePromotionSelection}
+            flip={flip}
           />
         ) : u ? (
           <Piece position={position} piece={u} />

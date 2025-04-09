@@ -1,0 +1,68 @@
+.mode-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.mode-nav-button {
+  padding: 8px 15px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  color: white;
+  text-align: center;
+  min-width: 100px;
+}
+
+.mode-nav-button:nth-child(1) {
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+}
+
+.mode-nav-button:nth-child(2) {
+  background: linear-gradient(135deg, #9C27B0, #4A148C);
+}
+
+.mode-nav-button:nth-child(3) {
+  background: linear-gradient(135deg, #2196F3, #0D47A1);
+}
+
+.mode-nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mode-nav-button.active {
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+  position: relative;
+}
+
+.mode-nav-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+@media (max-width: 768px) {
+  .mode-nav-button {
+    font-size: 12px;
+    padding: 6px 10px;
+    min-width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mode-nav-button {
+    font-size: 10px;
+    padding: 5px 8px;
+    min-width: 60px;
+  }
+}

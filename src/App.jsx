@@ -5,46 +5,42 @@ import { gust, repGame, resetGame } from './hex';
 import AIController from './comp/AIController';
 import EvaluationInfo from './comp/EvaluationInfo';
 import SideSelectionModal from './components/SideSelectionModal';
-import { makeCustomAIMove } from './utils/CustomAI'; // Import the custom AI function
+import { makeCustomAIMove } from './utils/CustomAI';
+import { useNavigate } from 'react-router-dom';
 
 function App({ initialMode = "offline", hideControls = false }) {
   const [board, setBoard] = useState([]);  
   const [flip, setFlip] = useState(false); 
   const [autoFlip, setAutoFlip] = useState(true); 
-  const [previousAutoFlip, setPreviousAutoFlip] = useState(true); // Store previous auto-flip state
+  const [previousAutoFlip, setPreviousAutoFlip] = useState(true); 
   const [promotionInProgress, setPromotionInProgress] = useState(false); 
   const [isAIEnabled, setIsAIEnabled] = useState(initialMode === "ai");
   const [isAITurn, setIsAITurn] = useState(false);
   const [difficulty, setDifficulty] = useState('easy');
-  const [evaluation, setEvaluation] = useState(0); // 0 means equal, positive for white advantage
-  const [isGameInProgress, setIsGameInProgress] = useState(false); // Track if a game is in progress
+  const [evaluation, setEvaluation] = useState(0); 
+  const [isGameInProgress, setIsGameInProgress] = useState(false); 
   const [showSideModal, setShowSideModal] = useState(false);
   const [playerSide, setPlayerSide] = useState('white');
-  const [thinking, setThinking] = useState(false); // Add thinking state
-  const [aiColor, setAiColor] = useState('b'); // Default AI plays as black
-  const chessRef = useRef(null); // Reference to chess state
+  const [thinking, setThinking] = useState(false); 
+  const [aiColor, setAiColor] = useState('b'); 
+  const chessRef = useRef(null); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Set AI mode based on initialMode
     if (initialMode === 'ai') {
       setIsAIEnabled(true);
+      // Show side selection modal when in AI mode and game not started
+      if (!isGameInProgress) {
+        setShowSideModal(true);
+      }
+    } else if (initialMode === 'online') {
+      // Initialize online mode logic if applicable
+      setIsAIEnabled(false);
     } else {
       setIsAIEnabled(false);
     }
-    
-    // Parse URL parameters to set initial game mode
-    const urlParams = new URLSearchParams(window.location.search);
-    const modeParam = urlParams.get('mode');
-    
-    if (modeParam === 'ai') {
-      setIsAIEnabled(true);
-    } else if (modeParam === 'online') {
-      // Initialize online mode logic if applicable
-      setIsAIEnabled(false);
-    } else if (modeParam === 'offline') {
-      setIsAIEnabled(false);
-    }
-  }, [initialMode]);
+  }, [initialMode, isGameInProgress]);
 
   useEffect(() => {
     repGame(); 
@@ -116,10 +112,10 @@ function App({ initialMode = "offline", hideControls = false }) {
 
   const toggleAI = () => {
     if (!isAIEnabled) {
-      // When switching to AI mode, show the side selection modal
-      setShowSideModal(true);
+      // Navigate to AI mode
+      navigate('/play/ai');
     } else {
-      // When switching away from AI mode, just reset
+      // Navigate to offline mode
       if (isGameInProgress) {
         const confirmed = window.confirm("Are you sure you want to switch game modes? Your current game will be reset.");
         if (!confirmed) {
@@ -127,8 +123,7 @@ function App({ initialMode = "offline", hideControls = false }) {
         }
       }
       resetGame();
-      setIsAIEnabled(false);
-      setAutoFlip(previousAutoFlip);
+      navigate('/play/offline');
     }
   };
 
@@ -302,8 +297,8 @@ function App({ initialMode = "offline", hideControls = false }) {
           )}
         </div>
         
-        {/* Buttons in a separate container */}
-        <div className="controls-container">
+        {/* Buttons in a separate container - add marginTop to bring closer to board */}
+        <div className="controls-container" style={{ marginTop: '10px' }}>
           <div className='button-container'>
             <button className="reset-button" onClick={(e) => {createRipple(e); handleResetGame();}}>
               Reset Game
@@ -322,14 +317,10 @@ function App({ initialMode = "offline", hideControls = false }) {
             >
               {autoFlip ? 'Disable Auto Flip' : 'Enable Auto Flip'}
             </button>
-            <button className="ai-toggle-button" onClick={(e) => {createRipple(e); toggleAI();}}>
-              {isAIEnabled ? 'Play 2 Players' : 'Play vs AI'}
-            </button>
           </div>
         </div>
       </div>
       
-      {/* Add the modal to your render method */}
       <SideSelectionModal
         isOpen={showSideModal}
         onClose={() => setShowSideModal(false)}
